@@ -2,15 +2,15 @@
 
 1. **Project Setup**
 
-    - [ ] Initialize a Next.js project.
-    - [ ] Configure Tailwind CSS for styling.
-    - [ ] Integrate shadcn UI components.
+    - [x] Initialize a Next.js project.
+    - [x] Configure Tailwind CSS for styling.
+    - [x] Integrate shadcn UI components.
 
 2. **Spotify Authentication**
 
-    - [ ] Implement Spotify OAuth login.
-    - [ ] Configure environment variables for client ID, secret, and redirect URI.
-    - [ ] Securely manage tokens and session data using secure cookies.
+    - [x] Implement Spotify OAuth login.
+    - [x] Configure environment variables for client ID, secret, and redirect URI.
+    - [x] Securely manage tokens and session data using secure cookies.
 
 3. **Playlist Retrieval**
 
