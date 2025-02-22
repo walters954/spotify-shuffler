@@ -21,13 +21,15 @@ export function CookieConsent() {
         toast.success("Preferences saved", {
             description: "Your cookie preferences have been saved.",
         });
+        // Reload the page to enable analytics
+        window.location.reload();
     };
 
     const handleDecline = () => {
         localStorage.setItem("cookieConsent", "false");
         setShowBanner(false);
         toast.success("Preferences saved", {
-            description: "You've opted out of optional cookies.",
+            description: "You've opted out of optional cookies and analytics.",
         });
     };
 
@@ -38,14 +40,16 @@ export function CookieConsent() {
             <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="text-sm">
                     <p>
-                        We use cookies to enhance your experience. We only use
-                        essential cookies for authentication and session
-                        management. No tracking or marketing cookies are used.{" "}
+                        We use cookies to enhance your experience. Essential
+                        cookies are used for authentication and session
+                        management. Analytics cookies help us understand how you
+                        use our app. You can decline optional cookies and
+                        analytics.{" "}
                     </p>
                 </div>
                 <div className="flex gap-2 shrink-0">
                     <Button variant="outline" size="sm" onClick={handleDecline}>
-                        Decline Optional
+                        Essential Only
                     </Button>
                     <Button size="sm" onClick={handleAccept}>
                         Accept All

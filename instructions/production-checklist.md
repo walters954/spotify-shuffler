@@ -7,8 +7,8 @@ Here’s the refined production readiness checklist based on your preferences:
 
 2. **Cookie Management & Privacy Compliance**
 
-    - [ ] Ensure **NextAuth.js cookies** are properly configured and secured (HttpOnly, Secure, SameSite settings).
-    - [ ] If required, display a **cookie consent banner** for GDPR/CCPA compliance.
+    - [x] Ensure **NextAuth.js cookies** are properly configured and secured (HttpOnly, Secure, SameSite settings).
+    - [x] If required, display a **cookie consent banner** for GDPR/CCPA compliance.
 
 3. **Tracking & Analytics**
 
