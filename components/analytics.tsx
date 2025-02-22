@@ -3,11 +3,17 @@
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 // Custom event tracking for Google Analytics
 declare global {
     interface Window {
-        gtag?: (...args: any[]) => void;
+        gtag?: (
+            command: string,
+            targetId: string,
+            params?: Record<string, unknown>
+        ) => void;
     }
 }
 
@@ -26,33 +32,31 @@ export function trackEvent(
     }
 }
 
-export function Analytics() {
-    useEffect(() => {
-        // Track page views
-        const handleRouteChange = (url: string) => {
-            if (typeof window.gtag !== "undefined") {
-                window.gtag("config", process.env.NEXT_PUBLIC_GA_ID!, {
-                    page_path: url,
-                });
-            }
-        };
+function AnalyticsContent() {
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
-        document.addEventListener(
-            "routeChangeComplete",
-            handleRouteChange as any
-        );
-        return () => {
-            document.removeEventListener(
-                "routeChangeComplete",
-                handleRouteChange as any
-            );
-        };
-    }, []);
+    useEffect(() => {
+        if (typeof window.gtag !== "undefined") {
+            const url = pathname + searchParams.toString();
+            window.gtag("config", process.env.NEXT_PUBLIC_GA_ID!, {
+                page_path: url,
+            });
+        }
+    }, [pathname, searchParams]);
 
     return (
         <>
             <VercelAnalytics />
             <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
         </>
+    );
+}
+
+export function Analytics() {
+    return (
+        <Suspense fallback={null}>
+            <AnalyticsContent />
+        </Suspense>
     );
 }

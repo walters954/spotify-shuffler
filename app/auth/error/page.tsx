@@ -1,8 +1,8 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 function ErrorContent() {
@@ -41,7 +41,13 @@ function ErrorContent() {
 export default function AuthError() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center p-24">
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense
+                fallback={
+                    <div className="text-center text-muted-foreground">
+                        Loading...
+                    </div>
+                }
+            >
                 <ErrorContent />
             </Suspense>
         </div>

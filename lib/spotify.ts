@@ -41,10 +41,8 @@ async function handleSpotifyError(response: Response) {
     let errorMessage = `Failed to fetch data: ${response.statusText}`;
     try {
         const errorData = await response.json();
-        if (errorData.error?.message) {
-            errorMessage = errorData.error.message;
-        }
-    } catch (e) {
+        errorMessage = errorData.error?.message ?? errorMessage;
+    } catch {
         // If we can't parse the error JSON, use the default message
     }
     throw new Error(errorMessage);
