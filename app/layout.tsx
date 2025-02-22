@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { CookieConsent } from "@/components/cookie-consent";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -59,6 +60,7 @@ export default function RootLayout({
                     </div>
                     <Providers>{children}</Providers>
                     <Toaster />
+                    <CookieConsent />
                 </ThemeProvider>
             </body>
         </html>
