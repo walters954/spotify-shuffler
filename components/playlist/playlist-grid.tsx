@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { PlaylistCard } from "./playlist-card";
+import { PlaylistCard } from "@/components/playlist/playlist-card";
 import type { SpotifyPlaylist } from "@/lib/spotify";
 import { Search } from "lucide-react";
 
@@ -32,14 +32,16 @@ export function PlaylistGrid({
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {filteredPlaylists.map((playlist) => (
-                    <PlaylistCard
-                        key={playlist.id}
-                        playlist={playlist}
-                        onClick={() => onPlaylistSelect(playlist)}
-                    />
-                ))}
+            <div className="bg-muted/50 rounded-lg p-6">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    {filteredPlaylists.map((playlist) => (
+                        <PlaylistCard
+                            key={playlist.id}
+                            playlist={playlist}
+                            onClick={() => onPlaylistSelect(playlist)}
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );
