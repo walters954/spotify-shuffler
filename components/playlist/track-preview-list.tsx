@@ -1,6 +1,6 @@
 "use client";
 
-import { Music, Shuffle } from "lucide-react";
+import { Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { SpotifyTrack } from "@/lib/spotify";
 

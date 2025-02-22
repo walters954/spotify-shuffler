@@ -34,7 +34,6 @@ export function PlaylistSelectionDialog({
 }: PlaylistSelectionDialogProps) {
     const { data: session } = useSession();
     const [isLoading, setIsLoading] = useState(false);
-    const [tracks, setTracks] = useState<SpotifyTrack[]>([]);
     const [shuffledTracks, setShuffledTracks] = useState<SpotifyTrack[]>([]);
     const [error, setError] = useState<string | null>(null);
 
@@ -49,7 +48,6 @@ export function PlaylistSelectionDialog({
                     session.accessToken,
                     playlist.id
                 );
-                setTracks(fetchedTracks);
                 setShuffledTracks(shuffleArray(fetchedTracks));
             } catch (err) {
                 setError("Failed to fetch tracks. Please try again.");
@@ -87,7 +85,7 @@ export function PlaylistSelectionDialog({
                     <DialogDescription className="text-sm">
                         Preview and adjust the shuffled order before saving. A
                         new shuffled playlist will be created or updated with
-                        the name "Shuffled {playlist.name}".
+                        the name &quot;Shuffled {playlist.name}&quot;.
                     </DialogDescription>
                 </DialogHeader>
 

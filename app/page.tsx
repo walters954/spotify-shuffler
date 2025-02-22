@@ -18,11 +18,7 @@ export default function Home() {
     const [error, setError] = useState<string | null>(null);
     const [selectedPlaylist, setSelectedPlaylist] =
         useState<SpotifyPlaylist | null>(null);
-    const {
-        shufflePlaylist,
-        isShuffling,
-        error: shuffleError,
-    } = usePlaylistShuffle();
+    const { shufflePlaylist, error: shuffleError } = usePlaylistShuffle();
 
     useEffect(() => {
         async function fetchPlaylists() {
@@ -34,9 +30,9 @@ export default function Home() {
                         session.accessToken
                     );
                     setPlaylists(userPlaylists);
-                } catch (err) {
+                } catch (error) {
                     setError("Failed to fetch playlists. Please try again.");
-                    console.error("Error fetching playlists:", err);
+                    console.error("Error fetching playlists:", error);
                 } finally {
                     setLoading(false);
                 }
@@ -59,10 +55,11 @@ export default function Home() {
             toast.success("Success!", {
                 description: `Created shuffled version of "${playlist.name}"`,
             });
-        } catch (err) {
+        } catch (error) {
             toast.error("Error", {
                 description: shuffleError || "Failed to shuffle playlist",
             });
+            console.error("Error shuffling playlist:", error);
         }
     };
 
@@ -75,7 +72,7 @@ export default function Home() {
                     </h1>
                     <p className="text-xl text-muted-foreground max-w-[600px]">
                         Create truly random shuffled playlists that actually
-                        work, unlike Spotify's built-in shuffle.
+                        work, unlike Spotify&apos;s built-in shuffle.
                     </p>
                     <LoginButton />
                 </div>
@@ -93,9 +90,10 @@ export default function Home() {
                                         True Random Shuffle
                                     </h3>
                                     <p className="text-muted-foreground">
-                                        Unlike Spotify's shuffle which tends to
-                                        play the same songs, we use a true
-                                        random algorithm for better variety.
+                                        Unlike Spotify&apos;s shuffle which
+                                        tends to play the same songs, we use a
+                                        true random algorithm for better
+                                        variety.
                                     </p>
                                 </div>
                                 <div className="flex flex-col items-center text-center space-y-4 p-6 rounded-lg border bg-card">
@@ -115,8 +113,9 @@ export default function Home() {
                                         Reshuffle Anytime
                                     </h3>
                                     <p className="text-muted-foreground">
-                                        Preview and reshuffle until you're happy
-                                        with the order before saving to Spotify.
+                                        Preview and reshuffle until you&apos;re
+                                        happy with the order before saving to
+                                        Spotify.
                                     </p>
                                 </div>
                             </div>
@@ -133,8 +132,8 @@ export default function Home() {
                                     </h3>
                                     <p className="text-muted-foreground">
                                         Securely connect your Spotify account
-                                        with one click. We don't store any of
-                                        your data.
+                                        with one click. We don&apos;t store any
+                                        of your data.
                                     </p>
                                 </div>
                                 <div className="space-y-2">
@@ -152,8 +151,8 @@ export default function Home() {
                                     </h3>
                                     <p className="text-muted-foreground">
                                         Preview the shuffled order and reshuffle
-                                        as many times as you want until it's
-                                        perfect.
+                                        as many times as you want until
+                                        it&apos;s perfect.
                                     </p>
                                 </div>
                                 <div className="space-y-2">
@@ -176,14 +175,14 @@ export default function Home() {
                             <div className="space-y-6 max-w-2xl mx-auto">
                                 <div className="space-y-2">
                                     <h3 className="text-xl font-semibold">
-                                        Why isn't Spotify shuffle random?
+                                        Why isn&apos;t Spotify shuffle random?
                                     </h3>
                                     <p className="text-muted-foreground">
-                                        Spotify's shuffle algorithm uses
-                                        "weighted randomness" which can make
-                                        some songs play more often than others.
-                                        Our shuffler uses true randomization for
-                                        better variety.
+                                        Spotify&apos;s shuffle algorithm uses
+                                        &quot;weighted randomness&quot; which
+                                        can make some songs play more often than
+                                        others. Our shuffler uses true
+                                        randomization for better variety.
                                     </p>
                                 </div>
                                 <div className="space-y-2">

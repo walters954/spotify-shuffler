@@ -7,7 +7,6 @@ import {
     CardHeader,
     CardTitle,
     CardDescription,
-    CardContent,
 } from "@/components/ui/card";
 
 interface PlaylistCardProps {
