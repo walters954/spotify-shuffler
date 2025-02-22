@@ -11,11 +11,13 @@ import "./globals.css";
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
+    display: "swap",
 });
 
 const geistMono = Geist_Mono({
     variable: "--font-geist-mono",
     subsets: ["latin"],
+    display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -46,24 +48,25 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="en">
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    <div className="fixed top-4 right-4 z-50">
-                        <ThemeToggle />
-                    </div>
-                    <Providers>{children}</Providers>
-                    <Toaster />
-                    <CookieConsent />
-                    <Analytics />
-                </ThemeProvider>
+                <Providers>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                    >
+                        <div className="fixed top-4 right-4 z-50">
+                            <ThemeToggle />
+                        </div>
+                        {children}
+                        <Toaster />
+                        <CookieConsent />
+                        <Analytics />
+                    </ThemeProvider>
+                </Providers>
             </body>
         </html>
     );

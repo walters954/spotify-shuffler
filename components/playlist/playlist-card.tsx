@@ -1,5 +1,7 @@
 "use client";
 
+import * as React from "react";
+import Image from "next/image";
 import { Music } from "lucide-react";
 import type { SpotifyPlaylist } from "@/lib/spotify";
 import {
@@ -8,7 +10,6 @@ import {
     CardTitle,
     CardDescription,
 } from "@/components/ui/card";
-import { KeyboardEvent } from "react";
 
 interface PlaylistCardProps {
     playlist: SpotifyPlaylist;
@@ -16,7 +17,7 @@ interface PlaylistCardProps {
 }
 
 export function PlaylistCard({ playlist, onClick }: PlaylistCardProps) {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: React.KeyboardEvent) => {
         if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
             onClick();
@@ -35,13 +36,16 @@ export function PlaylistCard({ playlist, onClick }: PlaylistCardProps) {
             <CardHeader className="p-4 sm:p-6">
                 <div className="w-full aspect-square bg-muted rounded-md flex items-center justify-center mb-3 sm:mb-4 overflow-hidden">
                     {playlist.images[0]?.url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                            src={playlist.images[0].url}
-                            alt={`Cover art for ${playlist.name}`}
-                            className="w-full h-full object-cover rounded-md"
-                            loading="lazy"
-                        />
+                        <div className="relative w-full h-full">
+                            <Image
+                                src={playlist.images[0].url}
+                                alt={`Cover art for ${playlist.name}`}
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="object-cover rounded-md"
+                                priority={false}
+                            />
+                        </div>
                     ) : (
                         <Music
                             className="h-12 w-12 text-muted-foreground"

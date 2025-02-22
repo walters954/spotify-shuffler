@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { PlaylistCard } from "@/components/playlist/playlist-card";
 import type { SpotifyPlaylist } from "@/lib/spotify";
@@ -15,7 +15,7 @@ export function PlaylistGrid({
     playlists,
     onPlaylistSelect,
 }: PlaylistGridProps) {
-    const [searchQuery, setSearchQuery] = useState("");
+    const [searchQuery, setSearchQuery] = React.useState("");
 
     const filteredPlaylists = playlists.filter((playlist) =>
         playlist.name.toLowerCase().includes(searchQuery.toLowerCase())
