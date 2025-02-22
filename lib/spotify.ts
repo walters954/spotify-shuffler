@@ -50,7 +50,11 @@ export async function getUserPlaylists(
 
         const data: SpotifyPaginatedResponse<SpotifyPlaylist> =
             await response.json();
-        return data.items;
+
+        // Filter out playlists that start with "Shuffled "
+        return data.items.filter(
+            (playlist) => !playlist.name.startsWith("Shuffled ")
+        );
     } catch (error) {
         console.error("Error fetching playlists:", error);
         throw error;

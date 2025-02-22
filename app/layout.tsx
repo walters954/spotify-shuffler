@@ -15,8 +15,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Spotify Playlist Shuffler",
-    description: "Shuffle your Spotify playlists with ease",
+    title: "Fix Spotify Shuffle Not Working | True Random Playlist Shuffler",
+    description:
+        "Tired of Spotify's shuffle not being random? Create truly randomized playlists with our Spotify Playlist Shuffler. Better than clearing cache or reinstalling Spotify.",
+    keywords: [
+        "spotify shuffle not working",
+        "spotify shuffle not random",
+        "spotify shuffle fix",
+        "how to fix spotify shuffle",
+        "spotify shuffle problem",
+        "spotify random playlist",
+        "spotify playlist randomizer",
+        "spotify true random",
+    ],
+    openGraph: {
+        title: "Fix Spotify Shuffle Not Working | True Random Playlist Shuffler",
+        description:
+            "Create truly random shuffled playlists that actually work, unlike Spotify's built-in shuffle. Better than clearing cache or reinstalling.",
+        type: "website",
+    },
 };
 
 export default function RootLayout({

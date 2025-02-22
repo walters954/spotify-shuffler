@@ -17,6 +17,7 @@
     - [x] Call Spotify API to fetch authenticated user playlists.
     - [x] Display playlists with key details (name, cover image, track count).
     - [x] Implement a searchable list for easier selection.
+    - [x] Filter out shuffled playlists from the grid view.
 
 4. **Playlist Selection**
 
