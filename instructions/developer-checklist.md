@@ -14,9 +14,9 @@
 
 3. **Playlist Retrieval**
 
-    - [ ] Call Spotify API to fetch authenticated user playlists.
-    - [ ] Display playlists with key details (name, cover image, track count).
-    - [ ] Implement a searchable list for easier selection.
+    - [x] Call Spotify API to fetch authenticated user playlists.
+    - [x] Display playlists with key details (name, cover image, track count).
+    - [x] Implement a searchable list for easier selection.
 
 4. **Playlist Selection**
 
