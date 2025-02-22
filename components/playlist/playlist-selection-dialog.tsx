@@ -79,10 +79,16 @@ export function PlaylistSelectionDialog({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
+            <DialogContent
+                className="sm:max-w-xl max-h-[90vh] overflow-hidden flex flex-col"
+                aria-labelledby="dialog-title"
+                aria-describedby="dialog-description"
+            >
                 <DialogHeader className="space-y-3">
-                    <DialogTitle>Shuffle Playlist</DialogTitle>
-                    <DialogDescription className="text-sm">
+                    <DialogTitle id="dialog-title">
+                        Shuffle Playlist
+                    </DialogTitle>
+                    <DialogDescription id="dialog-description">
                         Preview and adjust the shuffled order before saving. A
                         new shuffled playlist will be created or updated with
                         the name &quot;Shuffled {playlist.name}&quot;.
@@ -91,16 +97,22 @@ export function PlaylistSelectionDialog({
 
                 <div className="flex-1 overflow-hidden space-y-6 py-4">
                     <div className="flex items-start space-x-4">
-                        <div className="w-24 h-24 rounded-md overflow-hidden bg-muted flex items-center justify-center flex-shrink-0">
+                        <div
+                            className="w-24 h-24 rounded-md overflow-hidden bg-muted flex items-center justify-center flex-shrink-0"
+                            aria-hidden={!playlist.images[0]?.url}
+                        >
                             {playlist.images[0]?.url ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img
                                     src={playlist.images[0].url}
-                                    alt={playlist.name}
+                                    alt={`Cover art for ${playlist.name}`}
                                     className="w-full h-full object-cover"
                                 />
                             ) : (
-                                <Music className="h-12 w-12 text-muted-foreground" />
+                                <Music
+                                    className="h-12 w-12 text-muted-foreground"
+                                    aria-hidden="true"
+                                />
                             )}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -117,9 +129,18 @@ export function PlaylistSelectionDialog({
                     </div>
 
                     {error ? (
-                        <div className="text-red-500 text-center">{error}</div>
+                        <div
+                            className="text-red-500 text-center"
+                            role="alert"
+                            aria-live="polite"
+                        >
+                            {error}
+                        </div>
                     ) : isLoading && !shuffledTracks.length ? (
-                        <div className="text-center text-muted-foreground">
+                        <div
+                            className="text-center text-muted-foreground"
+                            aria-live="polite"
+                        >
                             Loading tracks...
                         </div>
                     ) : (
@@ -144,9 +165,13 @@ export function PlaylistSelectionDialog({
                     <Button
                         onClick={handleConfirm}
                         disabled={isLoading || !shuffledTracks.length}
+                        aria-busy={isLoading}
                     >
                         {isLoading && (
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            <Loader2
+                                className="mr-2 h-4 w-4 animate-spin"
+                                aria-hidden="true"
+                            />
                         )}
                         {isLoading ? "Saving..." : "Save to Spotify"}
                     </Button>

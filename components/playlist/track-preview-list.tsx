@@ -29,22 +29,37 @@ export function TrackPreviewList({
                     size="sm"
                     onClick={onShuffle}
                     disabled={isLoading}
+                    aria-label="Shuffle tracks again"
                 >
-                    <Shuffle className="h-4 w-4 mr-2" />
+                    <Shuffle className="h-4 w-4 mr-2" aria-hidden="true" />
                     Shuffle Again
                 </Button>
             </div>
-            <div className="max-h-[300px] overflow-y-auto space-y-2 pr-2">
+            <div
+                className="max-h-[300px] overflow-y-auto space-y-2 pr-2"
+                role="list"
+                aria-label="Preview of shuffled tracks"
+            >
                 {previewTracks.map((track, index) => (
                     <div
                         key={`${track.uri}-${index}`}
                         className="flex items-center gap-3 p-2 rounded-md hover:bg-accent"
+                        role="listitem"
                     >
-                        <div className="flex-shrink-0 w-8 text-muted-foreground text-sm">
+                        <div
+                            className="flex-shrink-0 w-8 text-muted-foreground text-sm"
+                            aria-hidden="true"
+                        >
                             {index + 1}
                         </div>
                         <div className="min-w-0 flex-1">
-                            <p className="truncate font-medium">{track.name}</p>
+                            <p className="truncate font-medium">
+                                {track.name}
+                                <span className="sr-only">
+                                    , Track {index + 1} of{" "}
+                                    {previewTracks.length}
+                                </span>
+                            </p>
                             <p className="text-sm text-muted-foreground truncate">
                                 {track.artists.map((a) => a.name).join(", ")}
                             </p>
@@ -52,7 +67,10 @@ export function TrackPreviewList({
                     </div>
                 ))}
                 {remainingCount > 0 && (
-                    <div className="text-sm text-muted-foreground text-center pt-2 border-t">
+                    <div
+                        className="text-sm text-muted-foreground text-center pt-2 border-t"
+                        aria-label={`${remainingCount} more tracks not shown in preview`}
+                    >
                         And {remainingCount} more tracks...
                     </div>
                 )}

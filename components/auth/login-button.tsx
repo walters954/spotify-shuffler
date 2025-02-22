@@ -8,13 +8,22 @@ export function LoginButton() {
 
     if (session) {
         return (
-            <Button variant="outline" onClick={() => signOut()}>
+            <Button
+                variant="outline"
+                onClick={() => signOut()}
+                aria-label="Sign out of your Spotify account"
+            >
                 Sign Out
             </Button>
         );
     }
 
     return (
-        <Button onClick={() => signIn("spotify")}>Sign in with Spotify</Button>
+        <Button
+            onClick={() => signIn("spotify")}
+            aria-label="Sign in with your Spotify account"
+        >
+            Sign in with Spotify
+        </Button>
     );
 }
