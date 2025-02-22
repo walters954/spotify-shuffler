@@ -80,25 +80,31 @@ export function PlaylistSelectionDialog({
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent
-                className="sm:max-w-xl max-h-[90vh] overflow-hidden flex flex-col"
+                className="sm:max-w-xl max-h-[90vh] overflow-hidden flex flex-col p-4 sm:p-6 gap-4"
                 aria-labelledby="dialog-title"
                 aria-describedby="dialog-description"
             >
                 <DialogHeader className="space-y-3">
-                    <DialogTitle id="dialog-title">
+                    <DialogTitle
+                        id="dialog-title"
+                        className="text-xl sm:text-2xl"
+                    >
                         Shuffle Playlist
                     </DialogTitle>
-                    <DialogDescription id="dialog-description">
+                    <DialogDescription
+                        id="dialog-description"
+                        className="text-sm sm:text-base"
+                    >
                         Preview and adjust the shuffled order before saving. A
                         new shuffled playlist will be created or updated with
                         the name &quot;Shuffled {playlist.name}&quot;.
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="flex-1 overflow-hidden space-y-6 py-4">
-                    <div className="flex items-start space-x-4">
+                <div className="flex-1 overflow-hidden space-y-4 sm:space-y-6">
+                    <div className="flex items-start gap-3 sm:gap-4">
                         <div
-                            className="w-24 h-24 rounded-md overflow-hidden bg-muted flex items-center justify-center flex-shrink-0"
+                            className="w-16 h-16 sm:w-24 sm:h-24 rounded-md overflow-hidden bg-muted flex items-center justify-center flex-shrink-0"
                             aria-hidden={!playlist.images[0]?.url}
                         >
                             {playlist.images[0]?.url ? (
@@ -107,16 +113,17 @@ export function PlaylistSelectionDialog({
                                     src={playlist.images[0].url}
                                     alt={`Cover art for ${playlist.name}`}
                                     className="w-full h-full object-cover"
+                                    loading="lazy"
                                 />
                             ) : (
                                 <Music
-                                    className="h-12 w-12 text-muted-foreground"
+                                    className="h-8 w-8 sm:h-12 sm:w-12 text-muted-foreground"
                                     aria-hidden="true"
                                 />
                             )}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h4 className="text-lg font-semibold truncate">
+                            <h4 className="text-base sm:text-lg font-semibold truncate">
                                 {playlist.name}
                             </h4>
                             <p className="text-sm text-muted-foreground">
@@ -130,7 +137,7 @@ export function PlaylistSelectionDialog({
 
                     {error ? (
                         <div
-                            className="text-red-500 text-center"
+                            className="text-red-500 text-center text-sm sm:text-base"
                             role="alert"
                             aria-live="polite"
                         >
@@ -138,7 +145,7 @@ export function PlaylistSelectionDialog({
                         </div>
                     ) : isLoading && !shuffledTracks.length ? (
                         <div
-                            className="text-center text-muted-foreground"
+                            className="text-center text-muted-foreground text-sm sm:text-base"
                             aria-live="polite"
                         >
                             Loading tracks...
@@ -154,11 +161,12 @@ export function PlaylistSelectionDialog({
                     )}
                 </div>
 
-                <DialogFooter className="flex space-x-2 sm:space-x-0 border-t pt-4">
+                <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0 border-t pt-4">
                     <Button
                         variant="outline"
                         onClick={onClose}
                         disabled={isLoading}
+                        className="w-full sm:w-auto"
                     >
                         Cancel
                     </Button>
@@ -166,6 +174,7 @@ export function PlaylistSelectionDialog({
                         onClick={handleConfirm}
                         disabled={isLoading || !shuffledTracks.length}
                         aria-busy={isLoading}
+                        className="w-full sm:w-auto"
                     >
                         {isLoading && (
                             <Loader2

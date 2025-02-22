@@ -25,21 +25,22 @@ export function PlaylistCard({ playlist, onClick }: PlaylistCardProps) {
 
     return (
         <Card
-            className="hover:bg-accent cursor-pointer transition-colors"
+            className="hover:bg-accent active:scale-[0.98] transition-all cursor-pointer touch-manipulation"
             onClick={onClick}
             onKeyDown={handleKeyDown}
             tabIndex={0}
             role="button"
             aria-label={`Select ${playlist.name} playlist with ${playlist.tracks.total} tracks by ${playlist.owner.display_name}`}
         >
-            <CardHeader>
-                <div className="w-full aspect-square bg-muted rounded-md flex items-center justify-center mb-4">
+            <CardHeader className="p-4 sm:p-6">
+                <div className="w-full aspect-square bg-muted rounded-md flex items-center justify-center mb-3 sm:mb-4 overflow-hidden">
                     {playlist.images[0]?.url ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                             src={playlist.images[0].url}
                             alt={`Cover art for ${playlist.name}`}
                             className="w-full h-full object-cover rounded-md"
+                            loading="lazy"
                         />
                     ) : (
                         <Music
@@ -48,8 +49,10 @@ export function PlaylistCard({ playlist, onClick }: PlaylistCardProps) {
                         />
                     )}
                 </div>
-                <CardTitle className="truncate">{playlist.name}</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-base sm:text-lg truncate">
+                    {playlist.name}
+                </CardTitle>
+                <CardDescription className="text-sm truncate">
                     {playlist.tracks.total} tracks • By{" "}
                     {playlist.owner.display_name}
                 </CardDescription>

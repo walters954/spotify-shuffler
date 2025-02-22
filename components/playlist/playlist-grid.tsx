@@ -22,18 +22,18 @@ export function PlaylistGrid({
     );
 
     return (
-        <div className="space-y-6">
-            <div className="relative">
+        <div className="space-y-6 w-full px-4 sm:px-0">
+            <div className="relative max-w-xl mx-auto w-full">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                     placeholder="Search playlists..."
-                    className="pl-10"
+                    className="pl-10 w-full"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </div>
-            <div className="bg-muted/50 rounded-lg p-6">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="bg-muted/50 rounded-lg p-4 sm:p-6">
+                <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {filteredPlaylists.map((playlist) => (
                         <PlaylistCard
                             key={playlist.id}
