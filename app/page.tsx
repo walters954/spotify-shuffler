@@ -7,7 +7,7 @@ import { PlaylistSelectionDialog } from "@/components/playlist/playlist-selectio
 import { getUserPlaylists } from "@/lib/spotify";
 import { usePlaylistShuffle } from "@/lib/hooks/use-playlist-shuffle";
 import { useEffect, useState } from "react";
-import type { SpotifyPlaylist } from "@/lib/spotify";
+import type { SpotifyPlaylist, SpotifyTrack } from "@/lib/spotify";
 import { toast } from "sonner";
 
 export default function Home() {
@@ -49,9 +49,12 @@ export default function Home() {
         setSelectedPlaylist(playlist);
     };
 
-    const handlePlaylistConfirm = async (playlist: SpotifyPlaylist) => {
+    const handlePlaylistConfirm = async (
+        playlist: SpotifyPlaylist,
+        tracks: SpotifyTrack[]
+    ) => {
         try {
-            await shufflePlaylist(playlist);
+            await shufflePlaylist(playlist, tracks);
             toast.success("Success!", {
                 description: `Created shuffled version of "${playlist.name}"`,
             });
@@ -70,8 +73,9 @@ export default function Home() {
                         Spotify Playlist Shuffler
                     </h1>
                     <p className="text-muted-foreground max-w-[600px]">
-                        Select a playlist to shuffle, and we'll create a new
-                        shuffled version while keeping your original intact.
+                        Select a playlist to shuffle, preview the shuffled
+                        order, and save it as a new playlist while keeping your
+                        original intact.
                     </p>
                     <LoginButton />
                 </div>

@@ -22,6 +22,8 @@
 
     - [x] Create a UI component for selecting a playlist.
     - [x] Show selected playlist details for confirmation.
+    - [x] Display preview of shuffled tracks before saving.
+    - [x] Allow reshuffling tracks in preview.
 
 5. **Shuffling Logic**
 

@@ -13,7 +13,10 @@ import {
 } from "@/lib/spotify";
 
 interface UsePlaylistShuffleReturn {
-    shufflePlaylist: (playlist: SpotifyPlaylist) => Promise<void>;
+    shufflePlaylist: (
+        playlist: SpotifyPlaylist,
+        tracks?: SpotifyTrack[]
+    ) => Promise<void>;
     isShuffling: boolean;
     error: string | null;
 }
@@ -23,7 +26,10 @@ export function usePlaylistShuffle(): UsePlaylistShuffleReturn {
     const [isShuffling, setIsShuffling] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const shufflePlaylist = async (playlist: SpotifyPlaylist) => {
+    const shufflePlaylist = async (
+        playlist: SpotifyPlaylist,
+        preShuffledTracks?: SpotifyTrack[]
+    ) => {
         if (!session?.accessToken) {
             setError("Not authenticated");
             return;
@@ -33,17 +39,22 @@ export function usePlaylistShuffle(): UsePlaylistShuffleReturn {
         setError(null);
 
         try {
-            // 1. Get all tracks from the original playlist
-            const tracks = await getAllPlaylistTracks(
-                session.accessToken,
-                playlist.id
-            );
+            let trackUris: string[];
 
-            // 2. Shuffle the tracks
-            const shuffledTracks = shuffleArray(tracks);
-            const trackUris = shuffledTracks.map((track) => track.uri);
+            if (preShuffledTracks) {
+                // Use the pre-shuffled tracks if provided
+                trackUris = preShuffledTracks.map((track) => track.uri);
+            } else {
+                // Otherwise, fetch and shuffle the tracks
+                const tracks = await getAllPlaylistTracks(
+                    session.accessToken,
+                    playlist.id
+                );
+                const shuffledTracks = shuffleArray(tracks);
+                trackUris = shuffledTracks.map((track) => track.uri);
+            }
 
-            // 3. Find existing shuffled playlist or create a new one
+            // Find existing shuffled playlist or create a new one
             const shuffledName = `Shuffled ${playlist.name}`;
             let shuffledPlaylist = await findShuffledPlaylist(
                 session.accessToken,
@@ -59,7 +70,7 @@ export function usePlaylistShuffle(): UsePlaylistShuffleReturn {
                 );
             }
 
-            // 4. Replace all tracks in the shuffled playlist
+            // Replace all tracks in the shuffled playlist
             await replacePlaylistTracks(
                 session.accessToken,
                 shuffledPlaylist.id,

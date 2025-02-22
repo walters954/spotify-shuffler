@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Music, Loader2 } from "lucide-react";
-import type { SpotifyPlaylist } from "@/lib/spotify";
+import type { SpotifyPlaylist, SpotifyTrack } from "@/lib/spotify";
+import { getAllPlaylistTracks, shuffleArray } from "@/lib/spotify";
+import { useSession } from "next-auth/react";
 import {
     Dialog,
     DialogContent,
@@ -12,12 +14,16 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { TrackPreviewList } from "./track-preview-list";
 
 interface PlaylistSelectionDialogProps {
     playlist: SpotifyPlaylist | null;
     isOpen: boolean;
     onClose: () => void;
-    onConfirm: (playlist: SpotifyPlaylist) => Promise<void>;
+    onConfirm: (
+        playlist: SpotifyPlaylist,
+        tracks: SpotifyTrack[]
+    ) => Promise<void>;
 }
 
 export function PlaylistSelectionDialog({
@@ -26,64 +32,123 @@ export function PlaylistSelectionDialog({
     onClose,
     onConfirm,
 }: PlaylistSelectionDialogProps) {
-    const [isShuffling, setIsShuffling] = useState(false);
+    const { data: session } = useSession();
+    const [isLoading, setIsLoading] = useState(false);
+    const [tracks, setTracks] = useState<SpotifyTrack[]>([]);
+    const [shuffledTracks, setShuffledTracks] = useState<SpotifyTrack[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
-    if (!playlist) return null;
+    useEffect(() => {
+        async function fetchTracks() {
+            if (!playlist || !session?.accessToken) return;
+
+            setIsLoading(true);
+            setError(null);
+            try {
+                const fetchedTracks = await getAllPlaylistTracks(
+                    session.accessToken,
+                    playlist.id
+                );
+                setTracks(fetchedTracks);
+                setShuffledTracks(shuffleArray(fetchedTracks));
+            } catch (err) {
+                setError("Failed to fetch tracks. Please try again.");
+                console.error("Error fetching tracks:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchTracks();
+    }, [playlist, session?.accessToken]);
+
+    const handleShuffle = () => {
+        setShuffledTracks(shuffleArray([...shuffledTracks]));
+    };
 
     const handleConfirm = async () => {
+        if (!playlist) return;
+        setIsLoading(true);
         try {
-            setIsShuffling(true);
-            await onConfirm(playlist);
+            await onConfirm(playlist, shuffledTracks);
         } finally {
-            setIsShuffling(false);
+            setIsLoading(false);
             onClose();
         }
     };
 
+    if (!playlist) return null;
+
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-xl">
                 <DialogHeader>
                     <DialogTitle>Shuffle Playlist</DialogTitle>
                     <DialogDescription>
-                        A new shuffled playlist will be created or updated with
+                        Preview and adjust the shuffled order before saving. A
+                        new shuffled playlist will be created or updated with
                         the name "Shuffled {playlist.name}"
                     </DialogDescription>
                 </DialogHeader>
-                <div className="flex items-start space-x-4 pt-4">
-                    <div className="w-24 h-24 rounded-md overflow-hidden bg-muted flex items-center justify-center flex-shrink-0">
-                        {playlist.images[0]?.url ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                                src={playlist.images[0].url}
-                                alt={playlist.name}
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <Music className="h-12 w-12 text-muted-foreground" />
-                        )}
+
+                <div className="space-y-6">
+                    <div className="flex items-start space-x-4">
+                        <div className="w-24 h-24 rounded-md overflow-hidden bg-muted flex items-center justify-center flex-shrink-0">
+                            {playlist.images[0]?.url ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                    src={playlist.images[0].url}
+                                    alt={playlist.name}
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <Music className="h-12 w-12 text-muted-foreground" />
+                            )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <h4 className="text-lg font-semibold truncate">
+                                {playlist.name}
+                            </h4>
+                            <p className="text-sm text-muted-foreground">
+                                {playlist.tracks.total} tracks
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                                By {playlist.owner.display_name}
+                            </p>
+                        </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                        <h4 className="text-lg font-semibold truncate">
-                            {playlist.name}
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                            {playlist.tracks.total} tracks
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                            By {playlist.owner.display_name}
-                        </p>
-                    </div>
+
+                    {error ? (
+                        <div className="text-red-500 text-center">{error}</div>
+                    ) : isLoading && !shuffledTracks.length ? (
+                        <div className="text-center text-muted-foreground">
+                            Loading tracks...
+                        </div>
+                    ) : (
+                        <TrackPreviewList
+                            tracks={shuffledTracks}
+                            onShuffle={handleShuffle}
+                            isLoading={isLoading}
+                        />
+                    )}
                 </div>
+
                 <DialogFooter className="flex space-x-2 sm:space-x-0">
-                    <Button variant="outline" onClick={onClose}>
+                    <Button
+                        variant="outline"
+                        onClick={onClose}
+                        disabled={isLoading}
+                    >
                         Cancel
                     </Button>
-                    <Button onClick={handleConfirm} disabled={isShuffling}>
-                        {isShuffling && (
+                    <Button
+                        onClick={handleConfirm}
+                        disabled={isLoading || !shuffledTracks.length}
+                    >
+                        {isLoading && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        {isShuffling ? "Shuffling..." : "Shuffle Playlist"}
+                        {isLoading ? "Saving..." : "Save to Spotify"}
                     </Button>
                 </DialogFooter>
             </DialogContent>
