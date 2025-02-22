@@ -198,6 +198,51 @@ export default function Home() {
                                 </div>
                             </div>
                         </section>
+
+                        <section className="space-y-6 text-center">
+                            <h2 className="text-3xl font-semibold">
+                                Ready to Try True Random Shuffle?
+                            </h2>
+                            <div className="flex justify-center">
+                                <LoginButton />
+                            </div>
+                        </section>
+
+                        <section className="space-y-6">
+                            <h2 className="text-3xl font-semibold text-center">
+                                Community Support
+                            </h2>
+                            <div className="max-w-2xl mx-auto bg-card border rounded-lg p-6 space-y-4">
+                                <h3 className="text-xl font-semibold">
+                                    Join the Movement for Pure Shuffle
+                                </h3>
+                                <p className="text-muted-foreground">
+                                    Many Spotify users have been requesting a
+                                    true random shuffle feature. A community
+                                    request on Spotify&apos;s forum has gained
+                                    over 1,000 likes, showing strong demand for
+                                    this functionality.
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-4xl font-bold text-primary">
+                                            1,008
+                                        </span>
+                                        <span className="text-muted-foreground">
+                                            Community Votes
+                                        </span>
+                                    </div>
+                                    <a
+                                        href="https://community.spotify.com/t5/Live-Ideas/WE-NEED-PURE-SHUFFLE/idi-p/5742021"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] px-4 py-2 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+                                    >
+                                        Support on Spotify Community
+                                    </a>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 )}
 
