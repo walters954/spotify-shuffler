@@ -1,3 +1,5 @@
+import { signIn } from "next-auth/react";
+
 const SPOTIFY_API_BASE = "https://api.spotify.com/v1";
 
 export interface SpotifyPlaylist {
@@ -32,6 +34,7 @@ export interface SpotifyPaginatedResponse<T> {
 async function handleSpotifyError(response: Response) {
     if (response.status === 401) {
         // Token expired or invalid
+        signIn("spotify", { callbackUrl: "/" });
         throw new Error("UNAUTHORIZED");
     }
 
@@ -73,8 +76,6 @@ export async function getUserPlaylists(
         );
     } catch (error) {
         if (error instanceof Error && error.message === "UNAUTHORIZED") {
-            // Special handling for unauthorized errors
-            window.location.href = "/api/auth/signin";
             return [];
         }
         console.error("Error fetching playlists:", error);
@@ -109,7 +110,6 @@ export async function getAllPlaylistTracks(
             next = data.next;
         } catch (error) {
             if (error instanceof Error && error.message === "UNAUTHORIZED") {
-                window.location.href = "/api/auth/signin";
                 return [];
             }
             console.error("Error fetching playlist tracks:", error);
@@ -147,7 +147,6 @@ export async function findShuffledPlaylist(
         );
     } catch (error) {
         if (error instanceof Error && error.message === "UNAUTHORIZED") {
-            window.location.href = "/api/auth/signin";
             return null;
         }
         console.error("Error finding shuffled playlist:", error);
@@ -185,7 +184,6 @@ export async function createPlaylist(
         return response.json();
     } catch (error) {
         if (error instanceof Error && error.message === "UNAUTHORIZED") {
-            window.location.href = "/api/auth/signin";
             throw new Error("Session expired. Please sign in again.");
         }
         console.error("Error creating playlist:", error);
@@ -247,7 +245,6 @@ export async function replacePlaylistTracks(
         }
     } catch (error) {
         if (error instanceof Error && error.message === "UNAUTHORIZED") {
-            window.location.href = "/api/auth/signin";
             throw new Error("Session expired. Please sign in again.");
         }
         console.error("Error replacing playlist tracks:", error);
