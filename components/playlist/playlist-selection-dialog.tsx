@@ -81,17 +81,17 @@ export function PlaylistSelectionDialog({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-xl">
-                <DialogHeader>
+            <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
+                <DialogHeader className="space-y-3">
                     <DialogTitle>Shuffle Playlist</DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription className="text-sm">
                         Preview and adjust the shuffled order before saving. A
                         new shuffled playlist will be created or updated with
-                        the name "Shuffled {playlist.name}"
+                        the name "Shuffled {playlist.name}".
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="space-y-6">
+                <div className="flex-1 overflow-hidden space-y-6 py-4">
                     <div className="flex items-start space-x-4">
                         <div className="w-24 h-24 rounded-md overflow-hidden bg-muted flex items-center justify-center flex-shrink-0">
                             {playlist.images[0]?.url ? (
@@ -125,15 +125,17 @@ export function PlaylistSelectionDialog({
                             Loading tracks...
                         </div>
                     ) : (
-                        <TrackPreviewList
-                            tracks={shuffledTracks}
-                            onShuffle={handleShuffle}
-                            isLoading={isLoading}
-                        />
+                        <div className="overflow-auto">
+                            <TrackPreviewList
+                                tracks={shuffledTracks}
+                                onShuffle={handleShuffle}
+                                isLoading={isLoading}
+                            />
+                        </div>
                     )}
                 </div>
 
-                <DialogFooter className="flex space-x-2 sm:space-x-0">
+                <DialogFooter className="flex space-x-2 sm:space-x-0 border-t pt-4">
                     <Button
                         variant="outline"
                         onClick={onClose}

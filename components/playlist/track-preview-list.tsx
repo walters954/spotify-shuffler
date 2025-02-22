@@ -15,6 +15,9 @@ export function TrackPreviewList({
     onShuffle,
     isLoading,
 }: TrackPreviewListProps) {
+    const previewTracks = tracks.slice(0, 15);
+    const remainingCount = tracks.length - 15;
+
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -32,7 +35,7 @@ export function TrackPreviewList({
                 </Button>
             </div>
             <div className="max-h-[300px] overflow-y-auto space-y-2 pr-2">
-                {tracks.map((track, index) => (
+                {previewTracks.map((track, index) => (
                     <div
                         key={`${track.uri}-${index}`}
                         className="flex items-center gap-3 p-2 rounded-md hover:bg-accent"
@@ -48,6 +51,11 @@ export function TrackPreviewList({
                         </div>
                     </div>
                 ))}
+                {remainingCount > 0 && (
+                    <div className="text-sm text-muted-foreground text-center pt-2 border-t">
+                        And {remainingCount} more tracks...
+                    </div>
+                )}
             </div>
         </div>
     );

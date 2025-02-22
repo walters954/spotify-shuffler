@@ -51,9 +51,9 @@
 
     - [x] Implement error handling for failed API calls and token expiration.
     - [x] Provide clear user feedback on errors.
-    - [ ] Test all flows (login, playlist retrieval, shuffle, create/update) to ensure functionality and UI responsiveness.
+    - [x] Test all flows (login, playlist retrieval, shuffle, create/update) to ensure functionality and UI responsiveness.
 
 10. **Final Verification**
-    - [ ] Confirm that shuffling the same playlist multiple times reuses the existing shuffled playlist.
+    - [x] Confirm that shuffling the same playlist multiple times reuses the existing shuffled playlist.
     - [ ] Perform code review and update documentation.
     - [ ] Validate the end-to-end user experience on both desktop and mobile.
