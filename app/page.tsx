@@ -5,8 +5,10 @@ import { LoginButton } from "@/components/auth/login-button";
 import { PlaylistGrid } from "@/components/playlist/playlist-grid";
 import { PlaylistSelectionDialog } from "@/components/playlist/playlist-selection-dialog";
 import { getUserPlaylists } from "@/lib/spotify";
+import { usePlaylistShuffle } from "@/lib/hooks/use-playlist-shuffle";
 import { useEffect, useState } from "react";
 import type { SpotifyPlaylist } from "@/lib/spotify";
+import { toast } from "sonner";
 
 export default function Home() {
     const { data: session } = useSession();
@@ -15,6 +17,11 @@ export default function Home() {
     const [error, setError] = useState<string | null>(null);
     const [selectedPlaylist, setSelectedPlaylist] =
         useState<SpotifyPlaylist | null>(null);
+    const {
+        shufflePlaylist,
+        isShuffling,
+        error: shuffleError,
+    } = usePlaylistShuffle();
 
     useEffect(() => {
         async function fetchPlaylists() {
@@ -43,8 +50,16 @@ export default function Home() {
     };
 
     const handlePlaylistConfirm = async (playlist: SpotifyPlaylist) => {
-        // We'll implement the shuffling logic in the next step
-        console.log("Shuffling playlist:", playlist);
+        try {
+            await shufflePlaylist(playlist);
+            toast.success("Success!", {
+                description: `Created shuffled version of "${playlist.name}"`,
+            });
+        } catch (err) {
+            toast.error("Error", {
+                description: shuffleError || "Failed to shuffle playlist",
+            });
+        }
     };
 
     return (

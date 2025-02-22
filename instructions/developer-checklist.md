@@ -25,28 +25,30 @@
 
 5. **Shuffling Logic**
 
-    - [ ] Develop a reliable algorithm to shuffle track order randomly.
-    - [ ] Ensure each shuffle produces a truly randomized order.
+    - [x] Develop a reliable algorithm to shuffle track order randomly.
+    - [x] Ensure each shuffle produces a truly randomized order.
+    - [x] Display the shuffled playlist in the UI.
+    - [x] Allow the user to shuffle again without creating a new playlist.
 
 6. **Duplicate Handling**
 
-    - [ ] Check for an existing shuffled playlist (via naming convention or secure cookie mapping).
-    - [ ] If found, update the existing playlist; otherwise, create a new one named "Shuffled [Original Playlist Name]".
+    - [x] Check for an existing shuffled playlist (via naming convention or secure cookie mapping).
+    - [x] If found, update the existing playlist; otherwise, create a new one named "Shuffled [Original Playlist Name]".
 
 7. **Playlist Creation/Update**
 
-    - [ ] Integrate with Spotify API endpoints to create a new playlist or update an existing one.
-    - [ ] Verify that the shuffled playlist appears correctly in the Spotify account.
+    - [x] Integrate with Spotify API endpoints to create a new playlist or update an existing one.
+    - [x] Verify that the shuffled playlist appears correctly in the Spotify account.
 
 8. **Session & Data Management**
 
-    - [ ] Store any necessary session data (like mapping between original and shuffled playlists) in secure cookies.
-    - [ ] Ensure no persistent user data is stored in a database.
+    - [x] Store any necessary session data (like mapping between original and shuffled playlists) in secure cookies.
+    - [x] Ensure no persistent user data is stored in a database.
 
 9. **Error Handling & Testing**
 
-    - [ ] Implement error handling for failed API calls and token expiration.
-    - [ ] Provide clear user feedback on errors.
+    - [x] Implement error handling for failed API calls and token expiration.
+    - [x] Provide clear user feedback on errors.
     - [ ] Test all flows (login, playlist retrieval, shuffle, create/update) to ensure functionality and UI responsiveness.
 
 10. **Final Verification**
