@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { LoginButton } from "@/components/auth/login-button";
 import { PlaylistGrid } from "@/components/playlist/playlist-grid";
+import { PlaylistSelectionDialog } from "@/components/playlist/playlist-selection-dialog";
 import { getUserPlaylists } from "@/lib/spotify";
 import { useEffect, useState } from "react";
 import type { SpotifyPlaylist } from "@/lib/spotify";
@@ -12,6 +13,8 @@ export default function Home() {
     const [playlists, setPlaylists] = useState<SpotifyPlaylist[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [selectedPlaylist, setSelectedPlaylist] =
+        useState<SpotifyPlaylist | null>(null);
 
     useEffect(() => {
         async function fetchPlaylists() {
@@ -36,8 +39,12 @@ export default function Home() {
     }, [session?.accessToken]);
 
     const handlePlaylistSelect = (playlist: SpotifyPlaylist) => {
-        // We'll implement this in the next step
-        console.log("Selected playlist:", playlist);
+        setSelectedPlaylist(playlist);
+    };
+
+    const handlePlaylistConfirm = async (playlist: SpotifyPlaylist) => {
+        // We'll implement the shuffling logic in the next step
+        console.log("Shuffling playlist:", playlist);
     };
 
     return (
@@ -75,6 +82,13 @@ export default function Home() {
                     </div>
                 )}
             </div>
+
+            <PlaylistSelectionDialog
+                playlist={selectedPlaylist}
+                isOpen={selectedPlaylist !== null}
+                onClose={() => setSelectedPlaylist(null)}
+                onConfirm={handlePlaylistConfirm}
+            />
         </main>
     );
 }

@@ -20,8 +20,8 @@
 
 4. **Playlist Selection**
 
-    - [ ] Create a UI component for selecting a playlist.
-    - [ ] Show selected playlist details for confirmation.
+    - [x] Create a UI component for selecting a playlist.
+    - [x] Show selected playlist details for confirmation.
 
 5. **Shuffling Logic**
 
