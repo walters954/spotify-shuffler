@@ -66,14 +66,20 @@ function DialogContent({
                     )))
     );
 
-    if (!hasDialogTitle) {
-        console.warn(
-            "DialogContent requires a DialogTitle component for accessibility. If you want to hide the title visually, wrap it with a visually-hidden class."
-        );
-    }
+    // Create a hidden title if none is provided
+    const contentWithTitle = hasDialogTitle ? (
+        children
+    ) : (
+        <>
+            <DialogHeader>
+                <DialogTitle className="sr-only">Dialog</DialogTitle>
+            </DialogHeader>
+            {children}
+        </>
+    );
 
     return (
-        <DialogPortal data-slot="dialog-portal">
+        <DialogPortal>
             <DialogOverlay />
             <DialogPrimitive.Content
                 data-slot="dialog-content"
@@ -83,7 +89,7 @@ function DialogContent({
                 )}
                 {...props}
             >
-                {children}
+                {contentWithTitle}
                 <DialogPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
                     <XIcon />
                     <span className="sr-only">Close</span>

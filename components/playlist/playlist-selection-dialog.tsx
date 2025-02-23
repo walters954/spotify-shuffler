@@ -79,22 +79,12 @@ export function PlaylistSelectionDialog({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent
-                className="sm:max-w-xl max-h-[90vh] overflow-hidden flex flex-col p-4 sm:p-6 gap-4"
-                aria-labelledby="dialog-title"
-                aria-describedby="dialog-description"
-            >
+            <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-hidden flex flex-col p-4 sm:p-6 gap-4">
                 <DialogHeader className="space-y-3">
-                    <DialogTitle
-                        id="dialog-title"
-                        className="text-xl sm:text-2xl"
-                    >
+                    <DialogTitle className="text-xl sm:text-2xl">
                         Shuffle Playlist
                     </DialogTitle>
-                    <DialogDescription
-                        id="dialog-description"
-                        className="text-sm sm:text-base"
-                    >
+                    <DialogDescription className="text-sm sm:text-base">
                         Preview and adjust the shuffled order before saving. A
                         new shuffled playlist will be created or updated with
                         the name &quot;Shuffled {playlist.name}&quot;.
