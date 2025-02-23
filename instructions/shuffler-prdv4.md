@@ -44,8 +44,15 @@ The Spotify Playlist Shuffler is a web application designed to let users quickly
     -   If found, update the existing playlist; if not, create a new one.
 
 -   **Playlist Creation/Update:**
+
     -   Use Spotify's API endpoints to create or update the playlist.
     -   Ensure the new or updated playlist is immediately available in the user's Spotify account.
+
+-   **Playlist Deletion:**
+
+    -   Provide a global button to delete all shuffled playlists at once.
+    -   When viewing a playlist that has a shuffled version, show a button to delete its shuffled counterpart.
+    -   Confirm user intent before deletion through a confirmation dialog.
 
 ### 3.4. Session & Data Management
 
@@ -77,7 +84,13 @@ The Spotify Playlist Shuffler is a web application designed to let users quickly
         - If it exists, it updates this playlist with the new track order.
         - If not, it creates a new playlist with the shuffled tracks.
 
-5. **Confirmation & Feedback:**
+5. **Playlist Management:**
+
+    - Users can delete individual shuffled playlists when viewing their original playlist.
+    - Users can bulk delete all shuffled playlists using a global delete button.
+    - Confirmation is required before any deletion occurs.
+
+6. **Confirmation & Feedback:**
     - The user receives confirmation that their shuffled playlist has been created/updated.
     - Optionally, the app can display a link to open the newly shuffled playlist directly in Spotify.
 
