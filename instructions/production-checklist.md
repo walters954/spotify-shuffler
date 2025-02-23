@@ -1,4 +1,4 @@
-Here’s the refined production readiness checklist based on your preferences:
+Here's the refined production readiness checklist based on your preferences:
 
 1. **Licensing & Legal**
 
@@ -39,8 +39,8 @@ Here’s the refined production readiness checklist based on your preferences:
 
 8. **Security & Environment Management**
 
-    - [ ] Store **environment variables** securely in Vercel settings.
-    - [ ] Enforce **HTTPS**, use **Content Security Policies (CSP)**, and prevent common security vulnerabilities.
+    - [x] Store **environment variables** securely in Vercel settings.
+    - [x] Enforce **HTTPS**, use **Content Security Policies (CSP)**, and prevent common security vulnerabilities.
 
 9. **Performance Optimization**
 
