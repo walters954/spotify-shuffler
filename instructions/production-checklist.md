@@ -49,10 +49,10 @@ Here's the refined production readiness checklist based on your preferences:
 
 10. **Custom Error & Fallback Pages**
 
--   [ ] Implement **custom 404 and 500 pages** for better UX.
--   [ ] Handle **API errors** gracefully with user-friendly messages.
+    - [x] Implement **custom 404 and 500 pages** for better UX.
+    - [x] Handle **API errors** gracefully with user-friendly messages.
 
 11. **SEO & Metadata**
 
--   [ ] Add **meta tags, Open Graph (OG) tags, and Twitter Cards** for social sharing.
--   [ ] If public-facing, include an **XML sitemap** and basic SEO optimizations.
+    - [ ] Add **meta tags, Open Graph (OG) tags, and Twitter Cards** for social sharing.
+    - [ ] If public-facing, include an **XML sitemap** and basic SEO optimizations.
