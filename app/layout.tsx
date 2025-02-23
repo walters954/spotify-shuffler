@@ -14,7 +14,6 @@ import {
     siteConfig,
 } from "@/lib/constants";
 import "./globals.css";
-import Head from "next/head";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -103,52 +102,23 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <>
-            <Head>
-                <title>Spotify Playlist Shuffler</title>
-                <meta
-                    name="description"
-                    content="Shuffle your Spotify playlists with true randomness."
-                />
-                <meta property="og:title" content="Spotify Playlist Shuffler" />
-                <meta
-                    property="og:description"
-                    content="Shuffle your Spotify playlists with true randomness."
-                />
-                <meta property="og:image" content="/images/og-image.png" />
-                <meta property="og:url" content="https://your-domain.com" />
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta
-                    name="twitter:title"
-                    content="Spotify Playlist Shuffler"
-                />
-                <meta
-                    name="twitter:description"
-                    content="Shuffle your Spotify playlists with true randomness."
-                />
-                <meta
-                    name="twitter:image"
-                    content="/images/twitter-image.png"
-                />
-            </Head>
-            <html lang="en" suppressHydrationWarning>
-                <body
-                    className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-                    suppressHydrationWarning
-                >
-                    <Providers>
-                        <ThemeProvider>
-                            <div className="fixed top-4 right-4 z-50">
-                                <ThemeToggle />
-                            </div>
-                            {children}
-                            <Toaster />
-                            <CookieConsent />
-                            <Analytics />
-                        </ThemeProvider>
-                    </Providers>
-                </body>
-            </html>
-        </>
+        <html lang="en" suppressHydrationWarning>
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                suppressHydrationWarning
+            >
+                <Providers>
+                    <ThemeProvider>
+                        <div className="fixed top-4 right-4 z-50">
+                            <ThemeToggle />
+                        </div>
+                        {children}
+                        <Toaster />
+                        <CookieConsent />
+                        <Analytics />
+                    </ThemeProvider>
+                </Providers>
+            </body>
+        </html>
     );
 }
