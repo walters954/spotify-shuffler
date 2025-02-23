@@ -268,12 +268,14 @@ export default function Home() {
                 )}
             </div>
 
-            <PlaylistSelectionDialog
-                playlist={selectedPlaylist}
-                isOpen={selectedPlaylist !== null}
-                onClose={() => setSelectedPlaylist(null)}
-                onConfirm={handlePlaylistConfirm}
-            />
+            {selectedPlaylist && (
+                <PlaylistSelectionDialog
+                    playlist={selectedPlaylist}
+                    isOpen={true}
+                    onClose={() => setSelectedPlaylist(null)}
+                    onConfirm={handlePlaylistConfirm}
+                />
+            )}
         </main>
     );
 }
