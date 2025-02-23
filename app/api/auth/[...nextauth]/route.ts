@@ -21,6 +21,9 @@ const handler = NextAuth({
             },
         }),
     ],
+    pages: {
+        signIn: "/", // Prevent automatic redirect to sign-in page
+    },
     cookies: {
         sessionToken: {
             name: `next-auth.session-token`,
@@ -56,6 +59,7 @@ const handler = NextAuth({
                 token.refreshToken = account.refresh_token;
                 token.expiresAt = account.expires_at! * 1000; // Convert to milliseconds
             }
+            // Don't attempt to refresh token automatically
             return token;
         },
         async session({ session, token }) {

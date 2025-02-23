@@ -33,9 +33,8 @@ export interface SpotifyPaginatedResponse<T> {
 
 async function handleSpotifyError(response: Response) {
     if (response.status === 401) {
-        // Token expired or invalid
-        signIn("spotify", { callbackUrl: "/" });
-        throw new Error("UNAUTHORIZED");
+        // Token expired or invalid - throw error instead of auto sign-in
+        throw new Error("Your session has expired. Please sign in again.");
     }
 
     let errorMessage = `Failed to fetch data: ${response.statusText}`;
