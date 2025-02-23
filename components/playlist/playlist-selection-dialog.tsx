@@ -102,7 +102,7 @@ export function PlaylistSelectionDialog({
             setHasShuffledVersion(false);
             setShowDeleteDialog(false);
             onClose();
-        } catch (error) {
+        } catch {
             toast.error("Error", {
                 description: "Failed to delete playlist",
             });

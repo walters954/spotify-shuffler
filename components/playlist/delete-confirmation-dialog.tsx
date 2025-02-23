@@ -33,7 +33,7 @@ export function DeleteConfirmationDialog({
         try {
             await onConfirm();
             onClose();
-        } catch (error) {
+        } catch {
             // Error handling is done in the parent component
         }
     };

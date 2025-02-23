@@ -6,7 +6,7 @@ import { PlaylistGrid } from "@/components/playlist/playlist-grid";
 import { PlaylistSelectionDialog } from "@/components/playlist/playlist-selection-dialog";
 import { getUserPlaylists } from "@/lib/spotify";
 import { usePlaylistShuffle } from "@/lib/hooks/use-playlist-shuffle";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import type { SpotifyPlaylist, SpotifyTrack } from "@/lib/spotify";
 import { toast } from "sonner";
 import { Shuffle, ListMusic, RefreshCw } from "lucide-react";
@@ -20,7 +20,7 @@ export default function Home() {
         useState<SpotifyPlaylist | null>(null);
     const { shufflePlaylist, error: shuffleError } = usePlaylistShuffle();
 
-    const fetchPlaylists = async () => {
+    const fetchPlaylists = useCallback(async () => {
         if (session?.accessToken) {
             setLoading(true);
             setError(null);
@@ -36,11 +36,11 @@ export default function Home() {
                 setLoading(false);
             }
         }
-    };
+    }, [session?.accessToken]);
 
     useEffect(() => {
         fetchPlaylists();
-    }, [session?.accessToken]);
+    }, [fetchPlaylists]);
 
     const handlePlaylistSelect = (playlist: SpotifyPlaylist) => {
         setSelectedPlaylist(playlist);
