@@ -20,7 +20,11 @@ export function LoginButton() {
 
     return (
         <Button
-            onClick={() => signIn("spotify")}
+            onClick={() =>
+                signIn("spotify", {
+                    callbackUrl: "/",
+                })
+            }
             aria-label="Sign in with your Spotify account"
         >
             Sign in with Spotify
