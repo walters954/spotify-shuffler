@@ -6,6 +6,13 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CookieConsent } from "@/components/cookie-consent";
 import { Analytics } from "@/components/analytics";
+import {
+    SITE_URL,
+    SITE_NAME,
+    SITE_DESCRIPTION,
+    TWITTER_HANDLE,
+    siteConfig,
+} from "@/lib/constants";
 import "./globals.css";
 import Head from "next/head";
 
@@ -23,8 +30,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "Fix Spotify Shuffle Not Working | True Random Playlist Shuffler",
-    description:
-        "Tired of Spotify's shuffle not being random? Create truly randomized playlists with our Spotify Playlist Shuffler. Better than clearing cache or reinstalling Spotify.",
+    description: SITE_DESCRIPTION,
     keywords: [
         "spotify shuffle not working",
         "spotify shuffle not random",
@@ -35,11 +41,59 @@ export const metadata: Metadata = {
         "spotify playlist randomizer",
         "spotify true random",
     ],
+    metadataBase: new URL(SITE_URL),
     openGraph: {
         title: "Fix Spotify Shuffle Not Working | True Random Playlist Shuffler",
-        description:
-            "Create truly random shuffled playlists that actually work, unlike Spotify's built-in shuffle. Better than clearing cache or reinstalling.",
+        description: SITE_DESCRIPTION,
         type: "website",
+        url: SITE_URL,
+        siteName: SITE_NAME,
+        locale: "en_US",
+        images: [
+            {
+                url: siteConfig.ogImage,
+                width: 512,
+                height: 512,
+                alt: SITE_NAME,
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Fix Spotify Shuffle Not Working | True Random Playlist Shuffler",
+        description: SITE_DESCRIPTION,
+        images: [siteConfig.ogImage],
+        creator: TWITTER_HANDLE,
+        site: TWITTER_HANDLE,
+    },
+    icons: {
+        icon: [
+            { url: "/favicon.ico" },
+            { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+            { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+        ],
+        apple: [{ url: "/apple-touch-icon.png" }],
+        other: [
+            {
+                rel: "mask-icon",
+                url: "/android-chrome-512x512.png",
+            },
+        ],
+    },
+    manifest: "/manifest.json",
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+        },
+    },
+    verification: {
+        google: "your-google-site-verification",
     },
 };
 
