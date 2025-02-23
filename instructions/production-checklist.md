@@ -54,5 +54,5 @@ Here's the refined production readiness checklist based on your preferences:
 
 11. **SEO & Metadata**
 
-    - [ ] Add **meta tags, Open Graph (OG) tags, and Twitter Cards** for social sharing.
-    - [ ] If public-facing, include an **XML sitemap** and basic SEO optimizations.
+    - [x] Add **meta tags** for social sharing.
+    - [x] If public-facing, include an **XML sitemap** and basic SEO optimizations.

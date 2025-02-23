@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { Music, Search } from "lucide-react";
 import type { SpotifyPlaylist } from "@/lib/spotify";
 import { useInView } from "react-intersection-observer";
@@ -26,7 +26,7 @@ export function PlaylistGrid({
         playlist.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const { ref: loadMoreRef, inView } = useInView({
+    const { ref: loadMoreRef } = useInView({
         threshold: 0.5,
         onChange: (inView: boolean) => {
             if (inView && displayCount < filteredPlaylists.length) {
@@ -40,7 +40,7 @@ export function PlaylistGrid({
     // Reset display count when search query changes
     useCallback(() => {
         setDisplayCount(ITEMS_PER_PAGE);
-    }, [searchQuery]);
+    }, []);
 
     const displayedPlaylists = filteredPlaylists.slice(0, displayCount);
 
