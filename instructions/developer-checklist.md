@@ -42,12 +42,12 @@
 
     - [x] Integrate with Spotify API endpoints to create a new playlist or update an existing one.
     - [x] Verify that the shuffled playlist appears correctly in the Spotify account.
-    - [ ] Implement deletion functionality for shuffled playlists:
-        - [ ] Add a global button to delete all shuffled playlists
-        - [ ] Add individual delete buttons for each shuffled playlist
-        - [ ] Create confirmation dialogs before deletion
-        - [ ] Integrate with Spotify API to perform deletions
-        - [ ] Update UI to reflect deleted playlists immediately
+    - [x] Implement deletion functionality for shuffled playlists:
+        - [x] Add a global button to delete all shuffled playlists
+        - [x] Add individual delete buttons for each shuffled playlist
+        - [x] Create confirmation dialogs before deletion
+        - [x] Integrate with Spotify API to perform deletions
+        - [x] Update UI to reflect deleted playlists immediately
 
 8. **Session & Data Management**
 

@@ -20,25 +20,25 @@ export default function Home() {
         useState<SpotifyPlaylist | null>(null);
     const { shufflePlaylist, error: shuffleError } = usePlaylistShuffle();
 
-    useEffect(() => {
-        async function fetchPlaylists() {
-            if (session?.accessToken) {
-                setLoading(true);
-                setError(null);
-                try {
-                    const userPlaylists = await getUserPlaylists(
-                        session.accessToken
-                    );
-                    setPlaylists(userPlaylists);
-                } catch (error) {
-                    setError("Failed to fetch playlists. Please try again.");
-                    console.error("Error fetching playlists:", error);
-                } finally {
-                    setLoading(false);
-                }
+    const fetchPlaylists = async () => {
+        if (session?.accessToken) {
+            setLoading(true);
+            setError(null);
+            try {
+                const userPlaylists = await getUserPlaylists(
+                    session.accessToken
+                );
+                setPlaylists(userPlaylists);
+            } catch (error) {
+                setError("Failed to fetch playlists. Please try again.");
+                console.error("Error fetching playlists:", error);
+            } finally {
+                setLoading(false);
             }
         }
+    };
 
+    useEffect(() => {
         fetchPlaylists();
     }, [session?.accessToken]);
 
@@ -55,6 +55,7 @@ export default function Home() {
             toast.success("Success!", {
                 description: `Created shuffled version of "${playlist.name}"`,
             });
+            fetchPlaylists(); // Refresh playlists to update UI
         } catch (error) {
             toast.error("Error", {
                 description: shuffleError || "Failed to shuffle playlist",

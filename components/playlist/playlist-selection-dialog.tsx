@@ -1,9 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Music, Loader2 } from "lucide-react";
+import { Music, Loader2, Trash2 } from "lucide-react";
 import type { SpotifyPlaylist, SpotifyTrack } from "@/lib/spotify";
-import { getAllPlaylistTracks, shuffleArray } from "@/lib/spotify";
+import {
+    getAllPlaylistTracks,
+    shuffleArray,
+    findShuffledPlaylist,
+} from "@/lib/spotify";
 import { useSession } from "next-auth/react";
 import {
     Dialog,
@@ -15,6 +19,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { TrackPreviewList } from "./track-preview-list";
+import { DeleteConfirmationDialog } from "./delete-confirmation-dialog";
+import { usePlaylistDelete } from "@/lib/hooks/use-playlist-delete";
+import { toast } from "sonner";
 
 interface PlaylistSelectionDialogProps {
     playlist: SpotifyPlaylist | null;
@@ -36,6 +43,9 @@ export function PlaylistSelectionDialog({
     const [isLoading, setIsLoading] = useState(false);
     const [shuffledTracks, setShuffledTracks] = useState<SpotifyTrack[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [hasShuffledVersion, setHasShuffledVersion] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const { deleteShuffledPlaylist, isDeleting } = usePlaylistDelete();
 
     useEffect(() => {
         async function fetchTracks() {
@@ -49,6 +59,13 @@ export function PlaylistSelectionDialog({
                     playlist.id
                 );
                 setShuffledTracks(shuffleArray(fetchedTracks));
+
+                // Check if a shuffled version exists
+                const shuffledPlaylist = await findShuffledPlaylist(
+                    session.accessToken,
+                    playlist
+                );
+                setHasShuffledVersion(!!shuffledPlaylist);
             } catch (err) {
                 setError("Failed to fetch tracks. Please try again.");
                 console.error("Error fetching tracks:", err);
@@ -69,29 +86,43 @@ export function PlaylistSelectionDialog({
         setIsLoading(true);
         try {
             await onConfirm(playlist, shuffledTracks);
+            setHasShuffledVersion(true);
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!playlist) return;
+        try {
+            await deleteShuffledPlaylist(playlist);
+            toast.success("Success!", {
+                description: `Deleted shuffled version of "${playlist.name}"`,
+            });
+            setHasShuffledVersion(false);
+            setShowDeleteDialog(false);
             onClose();
+        } catch (error) {
+            toast.error("Error", {
+                description: "Failed to delete playlist",
+            });
         }
     };
 
     if (!playlist) return null;
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-hidden flex flex-col p-4 sm:p-6 gap-4">
-                <DialogHeader className="space-y-3">
-                    <DialogTitle className="text-xl sm:text-2xl">
-                        Shuffle Playlist
-                    </DialogTitle>
-                    <DialogDescription className="text-sm sm:text-base">
-                        Preview and adjust the shuffled order before saving. A
-                        new shuffled playlist will be created or updated with
-                        the name &quot;Shuffled {playlist.name}&quot;.
-                    </DialogDescription>
-                </DialogHeader>
+        <>
+            <Dialog open={isOpen} onOpenChange={onClose}>
+                <DialogContent className="sm:max-w-xl">
+                    <DialogHeader>
+                        <DialogTitle>Shuffle Playlist</DialogTitle>
+                        <DialogDescription>
+                            Preview and save the shuffled version of your
+                            playlist.
+                        </DialogDescription>
+                    </DialogHeader>
 
-                <div className="flex-1 overflow-hidden space-y-4 sm:space-y-6">
                     <div className="flex items-start gap-3 sm:gap-4">
                         <div
                             className="w-16 h-16 sm:w-24 sm:h-24 rounded-md overflow-hidden bg-muted flex items-center justify-center flex-shrink-0"
@@ -126,56 +157,66 @@ export function PlaylistSelectionDialog({
                     </div>
 
                     {error ? (
-                        <div
-                            className="text-red-500 text-center text-sm sm:text-base"
-                            role="alert"
-                            aria-live="polite"
-                        >
-                            {error}
-                        </div>
-                    ) : isLoading && !shuffledTracks.length ? (
-                        <div
-                            className="text-center text-muted-foreground text-sm sm:text-base"
-                            aria-live="polite"
-                        >
-                            Loading tracks...
-                        </div>
+                        <div className="text-sm text-red-500">{error}</div>
                     ) : (
-                        <div className="overflow-auto">
-                            <TrackPreviewList
-                                tracks={shuffledTracks}
-                                onShuffle={handleShuffle}
-                                isLoading={isLoading}
-                            />
-                        </div>
+                        <TrackPreviewList
+                            tracks={shuffledTracks}
+                            onShuffle={handleShuffle}
+                            isLoading={isLoading}
+                        />
                     )}
-                </div>
 
-                <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0 border-t pt-4">
-                    <Button
-                        variant="outline"
-                        onClick={onClose}
-                        disabled={isLoading}
-                        className="w-full sm:w-auto"
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        onClick={handleConfirm}
-                        disabled={isLoading || !shuffledTracks.length}
-                        aria-busy={isLoading}
-                        className="w-full sm:w-auto"
-                    >
-                        {isLoading && (
-                            <Loader2
-                                className="mr-2 h-4 w-4 animate-spin"
-                                aria-hidden="true"
-                            />
-                        )}
-                        {isLoading ? "Saving..." : "Save to Spotify"}
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                    <DialogFooter className="flex flex-col sm:flex-row items-center gap-2 border-t pt-4">
+                        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto order-1 sm:order-none">
+                            <Button
+                                variant="outline"
+                                onClick={onClose}
+                                disabled={isLoading || isDeleting}
+                                className="w-full sm:w-auto"
+                            >
+                                Cancel
+                            </Button>
+                            {hasShuffledVersion && (
+                                <Button
+                                    variant="destructive"
+                                    onClick={() => setShowDeleteDialog(true)}
+                                    disabled={isLoading || isDeleting}
+                                    className="w-full sm:w-auto"
+                                >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Delete Shuffled Version
+                                </Button>
+                            )}
+                        </div>
+                        <Button
+                            onClick={handleConfirm}
+                            disabled={
+                                isLoading ||
+                                !shuffledTracks.length ||
+                                isDeleting
+                            }
+                            aria-busy={isLoading}
+                            className="w-full sm:w-auto order-0 sm:order-none"
+                        >
+                            {isLoading && (
+                                <Loader2
+                                    className="mr-2 h-4 w-4 animate-spin"
+                                    aria-hidden="true"
+                                />
+                            )}
+                            {isLoading ? "Saving..." : "Save to Spotify"}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            <DeleteConfirmationDialog
+                playlist={playlist}
+                isOpen={showDeleteDialog}
+                isDeleting={isDeleting}
+                onClose={() => setShowDeleteDialog(false)}
+                onConfirm={handleDelete}
+            />
+        </>
     );
 }

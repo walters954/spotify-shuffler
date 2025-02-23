@@ -259,3 +259,30 @@ export function shuffleArray<T>(array: T[]): T[] {
     }
     return shuffled;
 }
+
+export async function deletePlaylist(
+    accessToken: string,
+    playlistId: string
+): Promise<void> {
+    try {
+        const response = await fetch(
+            `${SPOTIFY_API_BASE}/playlists/${playlistId}/followers`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+
+        if (!response.ok) {
+            await handleSpotifyError(response);
+        }
+    } catch (error) {
+        if (error instanceof Error && error.message === "UNAUTHORIZED") {
+            throw new Error("Session expired. Please sign in again.");
+        }
+        console.error("Error deleting playlist:", error);
+        throw error;
+    }
+}
