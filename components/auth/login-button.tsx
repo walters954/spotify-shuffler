@@ -22,7 +22,9 @@ export function LoginButton() {
         <Button
             onClick={() =>
                 signIn("spotify", {
-                    callbackUrl: "/",
+                    callbackUrl:
+                        process.env.NEXT_PUBLIC_AUTH_CALLBACK_URL ||
+                        `${window.location.origin}`,
                 })
             }
             aria-label="Sign in with your Spotify account"
