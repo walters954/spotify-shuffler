@@ -29,26 +29,36 @@ const handler = NextAuth({
             name: `next-auth.session-token`,
             options: {
                 httpOnly: true,
-                sameSite: "lax",
+                sameSite: "none",
                 path: "/",
-                secure: process.env.NODE_ENV === "production",
+                secure: true,
             },
         },
         callbackUrl: {
             name: `next-auth.callback-url`,
             options: {
-                sameSite: "lax",
+                sameSite: "none",
                 path: "/",
-                secure: process.env.NODE_ENV === "production",
+                secure: true,
             },
         },
         csrfToken: {
             name: `next-auth.csrf-token`,
             options: {
                 httpOnly: true,
-                sameSite: "lax",
+                sameSite: "none",
                 path: "/",
-                secure: process.env.NODE_ENV === "production",
+                secure: true,
+            },
+        },
+        state: {
+            name: `next-auth.state`,
+            options: {
+                httpOnly: true,
+                sameSite: "none",
+                path: "/",
+                secure: true,
+                maxAge: 900, // 15 minutes in seconds
             },
         },
     },
