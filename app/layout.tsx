@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CookieConsent } from "@/components/cookie-consent";
 import { Analytics } from "@/components/analytics";
+import { Footer } from "@/components/footer";
 import {
     SITE_URL,
     SITE_NAME,
@@ -112,7 +113,10 @@ export default function RootLayout({
                         <div className="fixed top-4 right-4 z-50">
                             <ThemeToggle />
                         </div>
-                        {children}
+                        <div className="flex min-h-screen flex-col">
+                            <main className="flex-1">{children}</main>
+                            <Footer />
+                        </div>
                         <Toaster />
                         <CookieConsent />
                         <Analytics />
